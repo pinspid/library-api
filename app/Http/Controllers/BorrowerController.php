@@ -15,26 +15,26 @@ class BorrowerController extends Controller
     }
 
     public function index(){
-        $this->borrowerRepository->all();
+        return $this->borrowerRepository->all();
     }
 
     public function store(Request $request){
-        $this->borrowerRepository->saveBorrower($request);
+        return $this->borrowerRepository->saveBorrower($request);
     }
 
     public function show(int $id) {
-        $this->borrowerRepository->findById($id);
+        return $this->borrowerRepository->findById($id);
     }
 
     public function findByName(string $name) {
-        $this->borrowerRepository->findByName($name);
+        return $this->borrowerRepository->findByName($name);
     }
 
     public function update(Request $request, int $id) {
-        $this->borrowerRepository->updateBorrower($request, $id);
+        return $this->borrowerRepository->updateBorrower($request, $id);
     }
 
     public function destroy(int $id) {
-        $this->borrowerRepository->deleteBorrower($id);
+        return $this->borrowerRepository->deleteBorrower($id);
     }
 }

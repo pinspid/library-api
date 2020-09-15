@@ -19,14 +19,14 @@ class CategoryController extends Controller
     }
 
     public function store(Request $request) {
-        $category = $this->validation($request);
+        $category = $this->validator($request);
         Category::create($category);
         return response()->json(['success' => 'category add successfuly']);
     }
 
     public function update(Request $request, int $id) {
         $category = Category::where('id', $id)->firstOrFail();
-        $category->update($this->validation($request));
+        $category->update($this->validator($request));
         return response()->json(['success' => 'category has been update']);
     }
 
@@ -36,9 +36,9 @@ class CategoryController extends Controller
         return response()->json(['success' => 'catagory has been delete']);
     }
 
-    private function validation(Request $request) {
+    private function validator(Request $request) {
         return $request->validate([
-            'wording' => 'required|string'
+            'wording' => 'required|string|unique:categories'
         ]);
     }
 }

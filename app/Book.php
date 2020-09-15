@@ -8,6 +8,7 @@ class Book extends Model
 {
     protected $fillable = [
         'title', 
+        'category_id',
         'edition', 
         'author', 
         'publisher', 
@@ -22,6 +23,6 @@ class Book extends Model
     }
 
     public function borrowers(){
-        return $this->belongsTo('App\Borrower', 'borrows');
+        return $this->belongsToMany('App\Borrower', 'borrows', 'book_id', 'borrower_id');
     }
 }

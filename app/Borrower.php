@@ -16,6 +16,6 @@ class Borrower extends Model
 
     public function books()
     {
-        $this->belongsTo('App\Book', 'borrows');
+        return $this->belongsToMany('App\Book', 'borrows', 'borrower_id', 'book_id');
     }
 }

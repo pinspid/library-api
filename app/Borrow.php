@@ -6,12 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Borrow extends Model
 {
-
     protected $fillable = [
-        'borrower_id', 'book_id', 'borrow_type', 'borrow_date', 'back_date', 'back'
+        'borrower_id', 'book_id', 'borrow_type','back_date', 'back_at'
     ];
 
-    protected $timestamps = false;
+    public $timestamps = false;
 
-    protected $dates = ['borrow_date', 'back_date'];
+    protected $dates = ['borrow_date', 'back_date', 'back_at'];
 }

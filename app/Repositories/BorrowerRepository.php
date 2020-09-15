@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Borrower;
 use Illuminate\Http\Request;
 use App\Http\Resources\Borrower as ResourcesBorrower;
+use Illuminate\Support\Facades\Validator;
 
 class BorrowerRepository {
 
@@ -16,8 +17,8 @@ class BorrowerRepository {
     }
 
     public function all() {
-        $borrower = $this->borrower->newQuery()->orderBy('last_name')->get();
-        return ResourcesBorrower::collection($borrower);
+        $borrowers = $this->borrower->newQuery()->orderBy('last_name')->get();
+        return ResourcesBorrower::collection($borrowers);
     }
 
     public function findById(int $id) {
@@ -27,18 +28,35 @@ class BorrowerRepository {
         return new ResourcesBorrower($borrower);
     }
 
-    public function findByName(int $name) {
+    public function getLoanBook(int $id)
+    {
+        $data = $this->borrower
+                        ->newQuery()
+                        ->findOrFail($id)
+                        ->books;
+        $books = [];
+        foreach($data as $book) {
+            array_push($books, $book);
+        }
+        return $book;
+    }
+
+    public function findByName(string $name) {
         $borrowers = Borrower::where('last_name', 'like', '%' . $name . '%')
         ->orWhere(
             'first_name', 'like', '%' . $name . '%'
-        )->get();
+        )->orderBy('last_name')->get();
         return ResourcesBorrower::collection($borrowers);
     }
 
     public function saveBorrower(Request $request) {
-        $borrower = $this->validation($request);
+        $validator = $this->validation($request);
 
-        Borrower::create($borrower);
+        if($validator->fails()){
+            return response()->json(['error' => $validator->errors()]);
+        }
+
+        Borrower::create($request->all());
 
         return response()->json(['success' => 'New Borrower has been add']);
     }
@@ -47,9 +65,15 @@ class BorrowerRepository {
 
         $borrower = Borrower::where('id', $id)->firstOrFail();
 
-        $borrower->update($this->validation($request));
-        
-        return response()->json(['success' => 'Borrower has been update']);
+        $validator = $this->validation($request);
+
+        if($validator->fails()){
+            return response()->json(['error' => $validator->errors()]);
+        } else {
+            $borrower->update($request->all());
+            
+            return response()->json(['success' => 'Borrower has been update']);
+        }
     }
 
     public function deleteBorrower(int $id) {
@@ -62,11 +86,11 @@ class BorrowerRepository {
     }
 
     private function validation(Request $request) {
-        return $request->validate([
+        return Validator::make($request->all(), [
             'last_name' => 'required|string',
             'first_name' => 'required|string',
-            'email' => 'required|email',
-            'phone' => 'required|integer',
+            'email' => 'required|email|unique:borrowers',
+            'phone' => 'required|integer|unique:borrowers',
             'adresse' => 'required|string'
         ]);
     }

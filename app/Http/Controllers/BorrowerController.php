@@ -23,7 +23,7 @@ class BorrowerController extends Controller
     }
 
     public function show(int $id) {
-        return $this->borrowerRepository->findById($id);
+        return $this->borrowerRepository->getLoanBook($id);
     }
 
     public function findByName(string $name) {

@@ -13,39 +13,40 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Book router;
+Route::middleware('auth:sanctum')->group(function() {
 
-Route::get('/book', 'BookController@index');
-Route::get('/book/getByTitle/{title}', 'BookController@findByTitle');
-Route::get('/book/perCategory/{category}', 'BookController@getBookPerCat');
-Route::post('/book', 'BookController@store');
-Route::put('/book/update/{id}', 'BookController@update');
-Route::delete('/book/delete/{id}', 'BookController@destroy');
+    Route::get('/book', 'BookController@index');
+    Route::get('/book/getByTitle/{title}', 'BookController@findByTitle');
+    Route::get('/book/perCategory/{category}', 'BookController@getBookPerCat');
+    Route::post('/book', 'BookController@store');
+    Route::put('/book/{id}', 'BookController@update');
+    Route::delete('/book/{id}', 'BookController@destroy');
 
-// Category Router;
+    // Category Router;
 
-Route::get('/category', 'CategoryController@index');
-Route::post('/category', 'CategoryController@store');
-Route::put('/category/{id}', 'CategoryController@update');
-Route::delete('/category/{id}', 'CategoryController@destroy');
+    Route::get('/category', 'CategoryController@index');
+    Route::post('/category', 'CategoryController@store');
+    Route::put('/category/{id}', 'CategoryController@update');
+    Route::delete('/category/{id}', 'CategoryController@destroy');
 
-// Borrower Router;
+    // Borrower Router;
 
-Route::get('/borrower', 'BorrowerController@index');
-Route::post('/borrower', 'BorrowerController@store');
-Route::get('/borrower/show/{id}', 'BorrowerController@show');
-Route::get('/borrower/showbyname/{name}', 'BorrowerController@findByName');
-Route::put('/borrower/update/{id}', 'BorrowerController@update');
-Route::delete('/borrower/delete/{id}', 'BorrowerController@destroy');
+    Route::get('/borrower', 'BorrowerController@index');
+    Route::post('/borrower', 'BorrowerController@store');
+    Route::get('/borrower/show/{id}', 'BorrowerController@show');
+    Route::get('/borrower/showbyname/{name}', 'BorrowerController@findByName');
+    Route::put('/borrower/{id}', 'BorrowerController@update');
+    Route::delete('/borrower/{id}', 'BorrowerController@destroy');
 
-// Borrow Router
+    // Borrow Router
 
-Route::get('/loan', 'BorrowController@index');
-Route::post('/loan', 'BorrowController@store');
-Route::post('/loan/back/{id}', 'BorrowController@comeback');
-Route::delete('/loan/{id}', 'BorrowController@destroy');
+    Route::get('/loan', 'BorrowController@index');
+    Route::post('/loan', 'BorrowController@store');
+    Route::post('/loan/{id}', 'BorrowController@comeback');
+    Route::delete('/loan/{id}', 'BorrowController@destroy');
+
+});

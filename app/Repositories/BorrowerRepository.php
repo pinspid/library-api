@@ -22,23 +22,18 @@ class BorrowerRepository {
     }
 
     public function findById(int $id) {
-        $borrower = $this->borrower
+        return $this->borrower
                         ->newQuery()
                         ->findOrFail($id);
-        return new ResourcesBorrower($borrower);
     }
 
     public function getLoanBook(int $id)
     {
-        $data = $this->borrower
-                        ->newQuery()
-                        ->findOrFail($id)
-                        ->books;
-        $books = [];
-        foreach($data as $book) {
-            array_push($books, $book);
-        }
-        return $book;
+        $borrower = $this->findById($id);
+        return response()->json([
+            'borrower' => $borrower,
+            'loan_number' => $borrower->books->count()
+        ]);
     }
 
     public function findByName(string $name) {
@@ -71,7 +66,7 @@ class BorrowerRepository {
             return response()->json(['error' => $validator->errors()]);
         } else {
             $borrower->update($request->all());
-            
+
             return response()->json(['success' => 'Borrower has been update']);
         }
     }

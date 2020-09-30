@@ -26,7 +26,7 @@ class CreateBooksTable extends Migration
             $table->unsignedInteger('borrow_copy')->default(0);
             $table->timestamps();
 
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            // $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });
     }
 

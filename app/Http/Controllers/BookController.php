@@ -25,6 +25,10 @@ class BookController extends Controller
         return $this->bookRepository->findByTitle($title);
     }
 
+    public function findById(int $id) {
+        return $this->bookRepository->getById($id);
+    }
+
     public function getBookPerCat(string $category) {
         return $this->bookRepository->bookPerCategory($category);
     }
@@ -34,7 +38,7 @@ class BookController extends Controller
         return $this->bookRepository->saveBook($request);
     }
 
-    public function update(Request $request, int $id) 
+    public function update(Request $request, int $id)
     {
         return $this->bookRepository->upadeBook($request, $id);
     }

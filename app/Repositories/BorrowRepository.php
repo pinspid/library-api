@@ -64,6 +64,8 @@ class BorrowRepository
         $loan = $this->getLoan($id);
         $book = $this->getBook($loan->book_id);
 
+        dd($loan);
+
         if ($book->borrow_copy >= 1 and $book->num_copy > $book->available_copy) {
             $book->update([
                 'available_copy' => $book->available_copy + 1,
@@ -145,11 +147,11 @@ class BorrowRepository
 
     private function getBook(int $id)
     {
-        return $this->book->newQuery()->findOrFail($id);
+        return $this->book->newQuery()->find($id);
     }
 
     private function getLoan(int $id)
     {
-        return $this->loan->newQuery()->findOrFail($id);
+        return $this->loan->newQuery()->find($id);
     }
 }

@@ -22,9 +22,7 @@ class BorrowerRepository {
     }
 
     public function findById(int $id) {
-        return $this->borrower
-                        ->newQuery()
-                        ->findOrFail($id);
+        return $this->borrower>newQuery()->findOrFail($id);
     }
 
     public function getLoanBook(int $id)

@@ -16,21 +16,25 @@ class BookRepository {
         return ResourcesBook::collection(Book::paginate());
     }
 
+    public function getById(int $id) {
+        return new ResourcesBook(Book::find($id));
+    }
+
     public function findByTitle(string $title) {
-        $book = Book::where('title', 'like','%' . $title . '%')->get();
-        
-        return ResourcesBook::collection($book);
+        // $book = Book::where('title', 'like','%' . $title . '%')->get();
+
+        return ResourcesBook::collection(Book::where('title', '=', $title)->get());
     }
 
     public function saveBook(Request $request): JsonResponse {
-        
+
         $validator = $this->validator($request);
 
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()]);
         } else {
-            $book = Book::create($request->all()); 
-            $book->update(['available_copy' => $book->num_copy]);  
+            $book = Book::create($request->all());
+            $book->update(['available_copy' => $book->num_copy]);
         }
 
         return response()->json(['success' => 'book save successfuly']);
@@ -47,15 +51,15 @@ class BookRepository {
         }
 
         $book->update($request->all());
-     
+
         return response()->json(['success' => 'book updated successfuly']);
-        
+
     }
 
-    public function deleteBook(int $id) 
+    public function deleteBook(int $id)
     {
         $book = Book::where('id', $id)->firstOrFail();
-        
+
         $book->delete();
 
         return response()->json(['success' => 'book delete successfuly']);

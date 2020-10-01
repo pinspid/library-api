@@ -4,6 +4,9 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+use App\Borrower;
+use App\Book;
+
 class Borrow extends JsonResource
 {
     /**
@@ -16,12 +19,12 @@ class Borrow extends JsonResource
     {
         return [
             'id' => $this->id,
-            'borrower_id' => $this->borrower_id,
-            'book_id' => $this->book_id,
-            'borrow_type' => $this->borrow_type,
-            'borrow_date' => $this->borrow_date,
-            'back_date' => $this->back_date,
-            'back' => ($this->back_at != null) ? $this->back_at->diffForHumans() : 'En Cours de prêt...'
+            'borrower' => Borrower::findOrFail($this->borrower_id),
+            'book' => Book::findOrFail($this->book_id),
+            'type' => $this->borrow_type,
+            'date' => $this->borrow_date->diffForHumans(),
+            'back_date' => $this->back_date->diffForHumans(),
+            'back' => ($this->back_at != null) ? $this->back_at->diffForHumans() : '-'
         ];
     }
 }

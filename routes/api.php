@@ -22,6 +22,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('/book', 'BookController@index');
     Route::get('/book/getByTitle/{title}', 'BookController@findByTitle');
     Route::get('/book/perCategory/{category}', 'BookController@getBookPerCat');
+    Route::get('/book/{id}', 'BookController@findById');
     Route::post('/book', 'BookController@store');
     Route::put('/book/{id}', 'BookController@update');
     Route::delete('/book/{id}', 'BookController@destroy');
@@ -46,7 +47,7 @@ Route::middleware('auth:sanctum')->group(function() {
 
     Route::get('/loan', 'BorrowController@index');
     Route::post('/loan', 'BorrowController@store');
-    Route::post('/loan/{id}', 'BorrowController@comeback');
+    Route::put('/loan/{id}', 'BorrowController@comeback');
     Route::delete('/loan/{id}', 'BorrowController@destroy');
 
 });
